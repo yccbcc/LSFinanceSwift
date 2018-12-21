@@ -66,12 +66,12 @@ class BannerView: UIView,UIScrollViewDelegate{
     
     //手拖动时 触发
     func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
-        print("开始减速:\(scrollView.contentOffset)")
+//        print("开始减速:\(scrollView.contentOffset)")
         handleSvOffset(scrollView: scrollView)
     }
     //设置offset时触发
     func scrollViewDidEndScrollingAnimation(_ scrollView: UIScrollView) {
-        print("结束动画:\(scrollView.contentOffset)")
+//        print("结束动画:\(scrollView.contentOffset)")
         handleSvOffset(scrollView: scrollView)
     }
     func handleSvOffset(scrollView:UIScrollView)  {

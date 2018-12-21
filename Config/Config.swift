@@ -18,4 +18,12 @@ public let kLifeWidth:((Float)->Float) = { (x:Float) -> Float in
     return (((x) / 750.0) * Float(Screen_Width))
 }
 
+public func sgm_safeAreaInset(view:UIView) -> UIEdgeInsets{
+    if #available(iOS 11.0, *) {
+        return view.safeAreaInsets;
+    } else {
+        // Fallback on earlier versions
+        return UIEdgeInsets.zero;
+    };
+}
 

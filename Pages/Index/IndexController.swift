@@ -16,6 +16,8 @@ class IndexController: BaseController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        
+        
         createUI()
         requestHeaderData()
     }
@@ -47,8 +49,11 @@ class IndexController: BaseController {
 //    UI相关
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        print(self.view.ld_height)
-        tv!.frame = CGRect.init(x: 0, y: 0, width: Screen_Width, height: self.view.ld_height);
+        let insets = sgm_safeAreaInset(view: self.view)
+//        print(insets)
+//        print(self.view.ld_height)
+//        print(Screen_Height)
+        tv!.frame = CGRect.init(x: 0, y: 0, width: Screen_Width, height: self.view.ld_height - insets.bottom);
     }
     
     
