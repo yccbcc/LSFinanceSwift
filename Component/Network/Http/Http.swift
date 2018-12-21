@@ -14,17 +14,27 @@ class http: NSObject {
     public class func requestGet(
         url:String,
         paramters:[String:Any]? = nil,
-        success:@escaping ([String:Any]?)->(),
-        fail:@escaping ([String:Any]?)->()
+        success:@escaping (Any?)->(),
+        fail:@escaping (Any?)->()
         )
         -> (){
             //encoding: JSON报文格式的:JSONEcoding.default 和 URLEncoding.default
             Alamofire.request(url, method: HTTPMethod.get, parameters: paramters, headers: nil).responseJSON { (response) in
                 if response.result.isSuccess {
-                    if let dic:Dictionary<String,Any> = (response.result.value as! Dictionary){
-                        success(dic)
+                    if let dic:Dictionary<String, Any?> = (response.result.value as? Dictionary){
+                        if let code = dic["code"]{
+                            if code as! Int == 200 {
+                                print("请求成功,code:\(code as! Int)")
+                                    success(dic["data"] as? [String : Any])
+                            }else{
+                                print("请求错误code:\(code as! Int)")
+                            }
+                        }else{
+                            print("返回数据没有返回码.请求错误")
+                        }
+
                     }else{
-                        success([:])
+                        print("返回数据为空")
                     }
                 }else{
                     print("请求失败")

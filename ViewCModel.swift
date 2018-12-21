@@ -16,6 +16,7 @@ class ViewCModel: HandyJSON {
     required init(){}
 }
 
+
 struct Headers: HandyJSON {
     var Accept:String?
     var AcceptEncoding:String?

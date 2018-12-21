@@ -19,7 +19,6 @@ class ViewController: UIViewController,twoVCProtocol {
         super.viewDidLoad()
         
         request();
-        
     }
     
     func request() -> () {
@@ -31,8 +30,14 @@ class ViewController: UIViewController,twoVCProtocol {
             let b = self.num % 2 == 0
             self.networkLoading?.hideLoading(networkLoadType: .loadAndResultView, bgView: self.view, isSuccess: b)
             self.num += 1
-            print(data!)
-            let model = ViewCModel.deserialize(from: data!);
+            
+            if let newData = data{
+                let a = newData as? Dictionary<String,Any>
+                let model = ViewCModel.deserialize(from: a);
+            }
+            
+            
+            
             
         }) { (error) in
             print(error!)
