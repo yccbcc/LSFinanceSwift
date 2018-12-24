@@ -19,15 +19,20 @@ class http: NSObject {
         )
         -> (){
             //encoding: JSON报文格式的:JSONEcoding.default 和 URLEncoding.default
+            print("请求url:\(url)")
+            if let para = paramters{
+                print("参数:\(para)")
+            }
             Alamofire.request(url, method: HTTPMethod.get, parameters: paramters, headers: nil).responseJSON { (response) in
                 if response.result.isSuccess {
                     if let dic:Dictionary<String, Any?> = (response.result.value as? Dictionary){
                         if let code = dic["code"]{
                             if code as! Int == 200 {
-                                print("请求成功,code:\(code as! Int)")
-                                    success(dic["data"] as? [String : Any])
+                                print("请求成功,url:\(url)")
+                                success(dic["data"] as? [String : Any])
                             }else{
-                                print("请求错误code:\(code as! Int)")
+                                fail("")
+                                print("请求错误url:\(url) msg:\(dic["message"])")
                             }
                         }else{
                             print("返回数据没有返回码.请求错误")

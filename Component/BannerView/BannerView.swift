@@ -10,7 +10,14 @@ import UIKit
 import Foundation
 import Kingfisher
 
+protocol BannerViewDelegate {
+    
+    func bannerTapIndex(_ index:Int);
+}
+
 class BannerView: UIView,UIScrollViewDelegate{
+    
+    var tapDelegate:BannerViewDelegate?
     
     init(frame: CGRect, imageArr: [String]?, defaultImg:UIImage?, isMove:Int) {
         super.init(frame: frame)
@@ -34,6 +41,10 @@ class BannerView: UIView,UIScrollViewDelegate{
                     let imgV = UIImageView.init(frame: CGRect.init(x: CGFloat(i) * width, y: 0, width: width, height: height))
                     let url = URL(string: newImageArr[i])
                     imgV.kf.setImage(with: url)
+                    let tap = UITapGestureRecognizer.init(target: self, action: #selector(self.imgVTap(tap:)))
+                    imgV.addGestureRecognizer(tap)
+                    imgV.isUserInteractionEnabled = true;
+                    imgV.tag = 100 + i
                     sv.addSubview(imgV)
                 }
                 sv.contentOffset = CGPoint.init(x: width, y: 0)
@@ -42,7 +53,7 @@ class BannerView: UIView,UIScrollViewDelegate{
                     // 在global线程里创建一个时间源
                     let timer = DispatchSource.makeTimerSource(flags: [],queue: DispatchQueue.global())
                     // 设定这个时间源是每秒循环一次，立即开始
-                    timer.schedule(deadline: .now(), repeating: .seconds(isMove))
+                    timer.schedule(deadline: .now() + 5, repeating: .seconds(isMove))
                     // 设定时间源的触发事件
                     timer.setEventHandler(handler: {
                         // 返回主线程处理一些事件，更新UI等等
@@ -82,6 +93,10 @@ class BannerView: UIView,UIScrollViewDelegate{
             x = scrollView.ld_width
         }
         scrollView.setContentOffset(CGPoint.init(x: x, y: 0), animated: false)
+    }
+    
+    @objc func imgVTap(tap:UITapGestureRecognizer)  {
+        tapDelegate?.bannerTapIndex((tap.view?.tag)! - 100 - 1)
     }
     
     required init?(coder aDecoder: NSCoder) {
